@@ -2,10 +2,12 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
-	//	"github.com/ziutek/mymysql/mysql"
-	//"github.com/ziutek/mymysql/mysql"
-	//_ "github.com/ziutek/mymysql/native" // Native engine
 )
+
+type Employee struct {
+	Id   string
+	Name string
+}
 
 func main() {
 	r := gin.Default()
@@ -25,39 +27,9 @@ func main() {
 			c.String(401, "Execute: "+err.Error())
 		}
 		for _, row := range rows {
-			c.JSON(200, gin.H{"Id": row.Str(0), "Name": row.Str(1)})
+			jsonobj := Employee{row.Str(0), row.Str(1)}
+			c.JSON(200, jsonobj)
 		}
-
-		//This also works
-		//err1 := init_("temp")
-		//if err1 != nil {
-		//	c.String(401, err1.Error())
-		//}
-		//rows, err := ExecuteQuery_("SELECT * FROM employee")
-		//if err != nil {
-		//	c.String(401, "Error while executing query")
-		//}
-		//for _, row := range rows {
-		//	c.JSON(200, gin.H{"Id": row.Str(0), "Name": row.Str(1)})
-		//}
-
-		//Works.................................................................
-		//......................................................................
-		//db := mysql.New("tcp", "", "127.0.0.1:3306", "", "", "test")
-		//err := db.Connect()
-		//if err != nil {
-		//	panic(err)
-		//}
-		//defer db.Close()
-		////rows, res, err := db.Query("SELECT * FROM employee where Id = %d", 2)
-		//rows, _, err := db.Query("SELECT * FROM employee")
-		//if err != nil {
-		//	panic(err)
-		//}
-
-		//for _, row := range rows {
-		//	c.JSON(200, gin.H{"Id": row.Str(0), "Name": row.Str(1)})
-		//}
 
 	})
 	r.Run(":8080")

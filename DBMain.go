@@ -29,22 +29,3 @@ func (mdb *MainDb) ExecuteQuery(sql string) ([]mysql.Row, error) {
 func (mdb *MainDb) Dispose() {
 	mdb.dbConn.Close()
 }
-
-var SQLConnection mysql.Conn
-
-func init_(dbname string) error {
-	SQLConnection = mysql.New("tcp", "", "127.0.0.1:3306", "", "", "test")
-	err := SQLConnection.Connect()
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func ExecuteQuery_(sql string) ([]mysql.Row, error) {
-	rows, _, err := SQLConnection.Query(sql)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
-}
